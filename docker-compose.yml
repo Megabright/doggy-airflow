@@ -1,0 +1,17 @@
+services:
+  airflow:
+    image: apache/airflow:latest
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "true"
+    volumes:
+      - ./src/main/python/dags:/opt/airflow/dags
+      - ./.env:/opt/airflow/env
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8080:8080"
+    command: standalone
+
+  kafka:
+    image: apache/kafka:latest
+    ports:
+      - "9092:9092"
