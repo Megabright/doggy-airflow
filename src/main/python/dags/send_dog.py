@@ -1,6 +1,8 @@
 from airflow import DAG
-from airflow.providers.docker.operators.docker import DockerOperator
+# from airflow.providers.docker.operators.docker import DockerOperator
 from datetime import datetime
+
+from airflow.providers.standard.operators.python import PythonOperator
 
 with DAG(
     "enviar_imagen_whatsapp",
@@ -9,10 +11,15 @@ with DAG(
     catchup=False,
 ) as dag:
     
-    ejecutar_job = DockerOperator(
+    # ejecutar_job = DockerOperator(
+    #     task_id="ejecutar_job",
+    #     image="doggy-producer:latest",
+    #     auto_remove='force',
+    #     docker_url="unix://var/run/docker.sock",
+    #     network_mode="doggy_doggy-net"
+    # )
+
+    ejecutar_job = PythonOperator(
         task_id="ejecutar_job",
-        image="doggy-producer:latest",
-        auto_remove='force',
-        docker_url="unix://var/run/docker.sock",
-        network_mode="doggy_doggy-net"
+        python_callable=lambda: print("Hola desde Airflow!"),
     )
